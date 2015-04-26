@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:lang="${#locale}">
+	<head th:include="layout::head-basic" />
+	<body th:lang="${#locale}">
+	    <p th:text="'Hello, ' + ${name} + '!'" />
+	</body>
+</html>

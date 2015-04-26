@@ -1,0 +1,61 @@
+//-----------------------------------------------------------------------------
+// build file for CodeLab project
+//-----------------------------------------------------------------------------
+
+apply plugin: 'scala'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'idea'
+apply plugin: 'war'
+
+version = '1.0.0'
+
+ext {
+	springVersion = '4.1.6.RELEASE'
+	springBootVersion = '1.2.3.RELEASE'
+	hibernateVersion = '4.3.9.Final'
+	scalaVersion = '2.11.6'
+	slf4jVersion = '1.7.12'
+	junitVersion = '4.12'
+}
+
+repositories {
+	mavenCentral()
+	maven {url "https://oss.sonatype.org/content/repositories/snapshots"}
+	maven {url "https://code.lds.org/nexus/content/groups/main-repo"}
+	maven {url "http://repo.typesafe.com/typesafe/releases/"}
+	maven {url "http://repo.spring.io/snapshot"}
+	maven {url "http://repo.spring.io/milestone"}
+}
+
+dependencies {
+	compile project("..:core")
+	// Scala
+	compile("org.scala-lang:scala-library:$scalaVersion")
+	// Spring Boot
+    compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+	runtime("org.springframework.boot:spring-boot-starter-websocket:$springBootVersion")
+	// Testing
+	testCompile("junit:junit:$junitVersion")
+	testCompile("org.springframework:spring-test:$springVersion")
+}
+
+eclipse {
+	classpath {
+		file {
+		    // Classpath entry for Eclipse which changes the order of classpathentries; otherwise no sources for 3rd party jars are shown
+		    withXml { xml ->
+		        def node = xml.asNode()
+		        node.remove( node.find { it.@path == 'org.eclipse.jst.j2ee.internal.web.container' } )
+		        node.appendNode( 'classpathentry', [ kind: 'con', path: 'org.eclipse.jst.j2ee.internal.web.container', exported: 'true'])
+		    }
+		}
+	}
+}
+
+task copyToLib(type: Copy) {
+	into "$buildDir/libs/lib" from configurations.runtime
+}
+
+jar {
+	dependsOn copyToLib
+}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:lang="${#locale}">
+	<head>
+		<th:block th:include="layout::head" />
+		<style type="text/css">
+		.control { display: none; }
+		</style>
+		<script type="text/javascript">/*<![CDATA[*/
+		require(["jquery", "core", "websocket", "dojo/domReady!"], function($, core, websocket) {
+			console.log(core);
+
+			var stompClient;
+			
+			$("#txtName").keypress(function(e) {
+				if (e.keyCode == 13) {
+					$("#btnConnect").click();
+				}
+			}).focus();
+
+			$("#btnConnect").click(function(e) {
+				if ($("#txtName").val()) {
+					!stompClient ? connect() : disconnect();
+				} else {
+					$("#txtName").focus();
+				}
+			});
+			
+			$("#btnSend").click(function(e) {
+				var messageObj = {name: $("#txtName").val(), message: $("#txtMessage").val()};
+				if (messageObj.message) {
+					stompClient.send("/app/messaging", {}, core.stringify(messageObj));
+				} else {
+					$("#txtMessage").focus();
+				}
+			});
+			
+			$("#txtMessage").keydown(function(e) {
+				if (e.ctrlKey && e.keyCode == 13) {
+					$("#btnSend").click();
+				}
+			});
+			
+			function connect() {
+				stompClient = websocket.connect("/messaging", function(frame, stompClient) {
+					var username = $("#txtName").val();
+					core.log("Connected as " + username);
+	                var subscription = stompClient.subscribe("/topic/messaging", function(message) {
+	                    addMessage(message);
+	                });
+					updateUI(true);
+				}, function(errmsg) {
+					core.log("Connection error.");
+				});
+			}
+			
+			function disconnect() {
+				websocket.disconnect(stompClient, function() {
+					stompClient = null;
+					core.log($("#txtName").val() + " disconnected.");
+					updateUI(false);
+				});
+			}
+			
+			function updateUI(connected) {
+				$("#txtName").prop("readonly", connected);
+				$("#btnConnect").text(connected ? "Disconnect" : "Connect");
+				$("#btnSend").prop("disabled", !connected);
+				$(".control").toggle(connected);
+				connected && $("#txtMessage").focus();
+				!connected && $("#txtName").focus();
+			}
+			
+			function addMessage(message) {
+				var messageObj = core.parseJSON(message.body);
+				core.log(messageObj);
+				var messageText = core.stringify(messageObj);
+				var messageUI = $("<div />").addClass("message").text(messageText);
+				$("#messagePanel").append(messageUI);
+			}
+			
+			core.log("Page initialized.");
+		});
+		/*]]>*/
+		</script>
+	</head>
+	<body th:lang="${#locale}">
+		<th:block th:include="layout::header" />
+		<div class="content">
+			<div>
+				<label th:text="#{labels/name}" />
+				<input id="txtName" type="text" size="20" />
+				<button id="btnConnect" th:text="#{labels/connect}" />
+				<button id="btnSend" class="control" th:text="#{labels/send}" disabled="disabled" />
+			</div>
+			<div id="sendPanel" class="control">
+				<textarea id="txtMessage" rows="5" cols="100" />
+			</div>
+			<div id="messagePanel" class="control" />
+		</div>
+		<th:block th:include="layout::footer" />
+	</body>
+</html>
