@@ -1,14 +1,9 @@
 package codelab.config
 
+import javax.persistence.{EntityManagerFactory, Persistence}
+
+import org.springframework.context.annotation.{Bean, Configuration, Lazy}
 import org.springframework.transaction.annotation.EnableTransactionManagement
-import org.springframework.context.annotation.Lazy
-import org.springframework.context.annotation.Configuration
-import javax.sql.DataSource
-import org.springframework.context.annotation.Bean
-import org.springframework.jdbc.datasource.DriverManagerDataSource
-import javax.persistence.EntityManagerFactory
-import javax.persistence.Persistence
-import java.util.Properties
 
 @Lazy
 @Configuration

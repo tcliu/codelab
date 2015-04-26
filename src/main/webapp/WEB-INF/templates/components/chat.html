@@ -1,0 +1,24 @@
+<section id="chatSection">
+	<style type="text/css">
+		#messagePanel { width: 600px; }
+		#messages { height: 350px; border: 1px solid #2e6d82; overflow: auto; }
+		#txtMessage { width: 100%; height: 100px; margin-top: 5px; }
+	</style>
+	<script>require(["js/chat", "dojo/domReady!"], function(chat) {
+		chat.init();	
+	});
+	</script>
+	<div>
+		<label th:text="#{labels/name}" />
+		<input id="txtName" type="text" size="20" />
+		<button id="btnConnect" th:text="#{labels/connect}" />
+		<button id="btnDisconnect" class="hidden" th:text="#{labels/disconnect}" />
+		<button id="btnSend" class="hidden" th:text="#{labels/send}" />
+	</div>
+	<div id="messagePanel">
+		<div id="messages" class="hidden" />
+		<div id="sendPanel" class="hidden">
+			<textarea id="txtMessage" />
+		</div>
+	</div>
+</section>

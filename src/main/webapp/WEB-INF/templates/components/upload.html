@@ -1,0 +1,15 @@
+<section id="upload">
+	<script>
+	require(["js/upload", "dojo/domReady!"], function(upload) {
+		upload.init();
+	});
+	</script>
+	<form id="frm_upload" method="post" th:action="@{/upload}" enctype="multipart/form-data">
+		<label th:text="#{labels/selectFile}" />
+		<div th:each="i: ${#numbers.sequence(1,1)}">
+			<input th:name="'file'+${i}" type="file" multiple="true" />
+		</div>
+		<input id="btnSubmit" type="button" th:value="#{labels/submit}" />
+	</form>
+	<div id="msg_upload" />
+</section>

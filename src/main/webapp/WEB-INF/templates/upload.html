@@ -1,78 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:lang="${#locale}">
 	<head>
-		<th:block th:include="layout::head" />
-		<script type="text/javascript">/*<![CDATA[*/
-		require(["jquery", "core"], function($, core) {
-			core.log(core);
-			
-			var labels, messages;
-			
-			function constructCallbackMessage(uploadObj) {
-				core.log(uploadObj);
-				var m = uploadObj.message;
-				for (var i=0; i<uploadObj.data.length; i++) {
-					var rec = uploadObj.data[i];
-					m += "<br />" + "[" + (i+1) + "] " + rec.fileName + " " + rec.code + " (" + rec.size + " bytes)";
-				}
-				return m;
-			}
-			
-			function showMessage(msg) {
-				$("#msg_upload").html(msg).show();
-			}
-			
-			$(function() {
-				$("#btnSubmit").click(function(e) {
-					if ($(":file").val()) {
-						$("#frm_upload").submit();
-					} else {
-						showMessage( core.prop("messages/upload.selectFiles") );
-					}
-				});
-				
-				$("#frm_upload").submit(function(e) {
-					var formData = new FormData(this);
-					$.ajax({
-						url: $(this).attr("action"),
-						type: 'POST',
-						data: formData,
-						mimeType: "multipart/form-data",
-						contentType: false,
-						cache: false,
-						processData: false,
-						success: function(data, textStatus, jqXHR) {
-							var uploadObj = $.parseJSON(data);
-							var cbmsg = constructCallbackMessage(uploadObj);
-							showMessage(cbmsg);
-							$(":file").replaceWith( $(":file").clone() ); 
-						},
-						error: function(jqXHR, textStatus, errorThrown) {
-							showMessage("Upload error.");
-						}           
-					});
-					e.preventDefault();
-				});
-
-				core.log("Page initialized.");
-			});
-		});
-		/*]]>*/
-		</script>
+		<th:block th:include="head::all" />
 	</head>
 	<body th:lang="${#locale}">
-		<th:block th:include="layout::header" />
-		<div class="content">
-			<form id="frm_upload" method="post" th:target="@{/upload}" enctype="multipart/form-data">
-			    <label th:text="#{labels/selectFile}" />
-			    <div th:each="i: ${#numbers.sequence(1,1)}">
-			    	<input th:name="'file'+${i}" type="file" multiple="true" />
-			    </div>
-			    <input id="btnSubmit" type="button" th:value="#{labels/submit}" />
-		    </form>
-		    <div id="msg_upload" />
-		    
+		<th:block th:include="header" />
+		<div class="container">
+			<th:block th:include="components/upload" />
 	    </div>
-	    <th:block th:include="layout::footer" />
+	    <th:block th:include="footer" />
 	</body>
 </html>

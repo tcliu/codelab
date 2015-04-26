@@ -18,10 +18,15 @@ class SpringViewController extends BaseComponent {
 	@ModelAttribute("app") def app = appService
 
     @RequestMapping(value = Array("/"), method = Array(RequestMethod.GET))
-    def index(model: Model) = "index"
+    def index(model: Model) = "main"
 
-//	@RequestMapping(value = Array("/error"))
-	def error(model: Model) : String = "error"
+    @RequestMapping(value = Array("/c/{name}", "/component/{name}"), method = Array(RequestMethod.POST))
+    def component(@PathVariable name : String, model : Model) = {
+		s"components/${name}"
+	}
+
+	@RequestMapping(value = Array("/angular"), method = Array(RequestMethod.GET))
+    def angular(model : Model) = "angular"
 
     @RequestMapping(value = Array("/greeting"), method = Array(RequestMethod.GET))
     def greeting(@RequestParam(value="name", required=false, defaultValue="World") name : String, model : Model) = {
@@ -29,11 +34,7 @@ class SpringViewController extends BaseComponent {
         "greeting"
     }
 
-	@RequestMapping(value = Array("/chat"))
+	@RequestMapping(value = Array("/chat"), method = Array(RequestMethod.GET))
 	def chat(model: Model) = "chat"
-
-	@ResponseBody
-	@RequestMapping(value = Array("/availability"), produces = Array("text/plain"))
-	def availability(model: Model) = Source.fromFile(new File("../iphone/src/main/resources/availability.json")).mkString
 
 }

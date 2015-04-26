@@ -1,0 +1,16 @@
+<section id="files">
+	<style type="text/css">
+		.file {}
+		.dir { color: green; }
+	</style>
+	<label th:text="#{labels/path}" />: <span th:text="${path}" />
+	<ul class="files">
+		<li th:with="parentFile=${path.getParentFile()}" th:if="${path.getParentFile()} != null">
+			<a class="dir" th:href="@{/files(path=${parentFile.getPath()})}" th:text="#{labels/parentDir}" />
+		</li>
+		<li th:each="file:${files}" th:with="fileName=${file.getName()},path=${file.getPath()},len=${file.length()},fmtSize=${fmt.formatSize(len)}">
+			<a th:if="${file.isFile()}" class="file" th:href="@{/files(path=${path})}" th:text="${fileName} + ' (' + ${fmtSize} + ' / ' + ${len} + ')'" />
+			<a th:if="${file.isDirectory()}" class="dir" th:href="@{/files(path=${path})}" th:text="${fileName}" />
+		</li>
+	</ul>
+</section>

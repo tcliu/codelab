@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-	<head th:include="layout::head-basic" />
-	<body>
-	    <p th:text="'It does not work!'" />
+	<th:block th:include="head::all" />
+	<body th:lang="${#locale}">
+		<th:block th:include="header" />
+		<div class="container">
+	    	<h1 th:text="#{labels/errorPage}" />
+		    <p th:text="#{messages/errorMessage}" />
+	    </div>
+		<th:block th:include="footer" />
 	</body>
 </html>

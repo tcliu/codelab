@@ -1,0 +1,43 @@
+<head th:fragment="head">
+
+	<th:block th:fragment="all">
+		<th:block th:include="head::min" />
+		<th:block th:include="head::style" />
+		<th:block th:include="head::script" />
+	</th:block>
+
+	<th:block th:fragment="min">
+		<title th:text="#{app/name}"></title>
+		<meta charset="utf-8" />
+		<link rel="icon" th:href="@{/img/favicon.ico}"/>
+	</th:block>
+ 
+ 	<th:block th:fragment="style">
+ 		<link rel="stylesheet" th:href="@{#{app/style.bootstrap.path}}" />  
+	    <link rel="stylesheet" th:href="@{#{app/style.less.path}}" media="screen" />
+	    <link rel="stylesheet" th:href="@{#{app/style.mobile.less}}" media="handheld" />
+	</th:block>
+	
+ 	<th:block th:fragment="script">
+		<script th:inline="javascript">
+		var contextPath = [[${#httpServletRequest.getContextPath()}]], 
+			servletPath = [[${#httpServletRequest.getServletPath()}]],
+			locale = [[${#locale.language}]];
+		var dojoConfig = {
+			baseUrl: "./", async: true, isDebug: true, parseOnLoad: false,
+			packages: [
+				{name: "sockjs", location: "lib/sockjs", main: [[@{#{app/sockjs.version}}]]},
+				{name: "stomp", location: "lib", main: "stomp"},
+				{name: "websocket", location: "js", main: [[@{#{app/websocket.js.version}}]]},
+				{name: "js", location: "js"},
+				{name: "core", location: "js", main: [[@{#{app/core.js.version}}]]}
+			]
+		};
+		</script>
+		<script th:src="@{#{app/jquery.js.path}}"></script>
+		<script th:src="@{#{app/dojo.js.path}}"></script>
+		<script th:src="@{#{app/angular.js.path}}"></script>
+		<script th:src="@{#{app/less.js.path}}"></script>
+	</th:block>
+	
+</head>

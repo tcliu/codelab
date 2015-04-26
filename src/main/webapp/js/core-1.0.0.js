@@ -1,5 +1,5 @@
 // Core module
-define(["jquery"], function($) {
+define([], function() {
 	var core = {
 		
 		// name of library
@@ -7,10 +7,7 @@ define(["jquery"], function($) {
 		
 		// library version
 		version: "1.0.0",
-		
-		// log function
-		log: function(o) { console.log(o); },
-		
+
 		// convert object to JSON string
 		stringify: JSON.stringify,
 		
@@ -31,7 +28,7 @@ define(["jquery"], function($) {
 			var bundle = this._bundles[bundleName]; 
 			if (!bundle) {
 				this._bundles[bundleName] = bundle = this._loadBundle(bundleName);
-				this.log(bundle);
+				console.log(bundle);
 			}
 			return bundle;
 		},

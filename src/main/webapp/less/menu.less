@@ -1,0 +1,28 @@
+
+#menu {
+
+	@bgColor: #FFFFFF;
+	@bgColorSelected: #E2EDFF;
+	@bgColorHover: lighten(@bgColorSelected, 2%);
+	@linkColor: #000040;
+	@linkColorHover: #000000;
+
+	margin-top: 10px;
+	ul {
+		margin: 0; padding: 0; 
+		li { 
+			list-style-type: none; 
+			a { 
+				display: block; background: @bgColor; padding: 8px; width: 150px; 
+				color: @linkColor; border-radius: 5px;
+			}
+			a.selected, a.selected:hover {
+				background: darken(@bgColorSelected, 5%); color: @linkColorHover;
+			}
+			a:hover { 
+				background: @bgColorHover; color: @linkColorHover; 
+				
+			}
+		}
+	}
+}

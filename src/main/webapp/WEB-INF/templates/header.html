@@ -1,0 +1,21 @@
+<header>
+	<div class="container">
+		<div class="leftPanel">
+			<a id="headerLabel" th:href="@{/}" th:text="#{labels/header}" />
+		</div>
+		<div class="rightPanel">
+			<div class="langSelector">
+				<a th:class="${#locale.toString()} == 'en' ? 'selected' : ''" th:href="@{?lang=en}" th:text="#{labels/lang.en}"></a>
+				<span>&nbsp;|&nbsp;</span>
+				<a th:class="${#locale.toString()} == 'zh' ? 'selected' : ''" th:href="@{?lang=zh}" th:text="#{labels/lang.zh}"></a>
+				<span>&nbsp;|&nbsp;</span>
+				<a th:class="${#locale.toString()} == 'zh_cn' ? 'selected' : ''" th:href="@{?lang=zh_CN}" th:text="#{labels/lang.zh_CN}"></a>
+			</div>
+			
+			<div>
+	
+			</div>
+		</div>
+		<div class="clearfix" />
+	</div>
+</header>

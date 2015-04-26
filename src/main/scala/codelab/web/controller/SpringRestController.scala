@@ -13,6 +13,8 @@ import core.service.FormatService
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 import core.BaseComponent
+import org.springframework.ui.Model
+import scala.io.Source
 
 @RestController
 @RequestMapping(produces = Array("text/plain;charset=utf-8"))
@@ -21,21 +23,17 @@ class SpringRestController extends BaseComponent {
 	@Resource var resourceService : ResourceService = _
 	@Resource var formatService : FormatService = _
 
-    @RequestMapping(value = Array("/rest"))
-    def home = "Hello World"
-
     @RequestMapping(value = Array("/test/{name}"))
-    def hello(@PathVariable name: String) = String.format("Hello, %s!", name)
+    def hello(@PathVariable name: String) = s"Hello, ${name}"
 
     /**
      * Compiles a LESS file and output the CSS content
      */
-	@RequestMapping(value = Array("/css/{path:.+}"), produces = Array("text/css;charset=utf-8"))
+	@RequestMapping(value = Array("/less/{path:.+}"), produces = Array("text/css;charset=utf-8"))
 	def compileLess(@PathVariable path: String, request: HttpServletRequest) = {
 		val servletContext = request.getServletContext
     	val file = new File(servletContext.getRealPath("/less/" + path))
-    	val css = resourceService.compileLess(file)
-    	css
+		if (file.isFile) resourceService.compileLess(file) else ""
     }
 
 	/**
@@ -50,5 +48,8 @@ class SpringRestController extends BaseComponent {
 			resourceService.getProperty(bundleName, key, locale)
 		}
 	}
+
+	@RequestMapping(value = Array("/availability"))
+	def availability(model: Model) = Source.fromFile(new File("../iphone/src/main/resources/availability.json")).mkString
 
 }

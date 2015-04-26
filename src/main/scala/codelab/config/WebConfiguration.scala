@@ -1,28 +1,20 @@
 package codelab.config
 
 import java.util.Locale
-
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration
-import org.springframework.boot.context.embedded.ServletContextInitializer
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Lazy
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer
-import org.springframework.web.servlet.config.annotation.EnableWebMvc
-import org.springframework.web.servlet.view.JstlView
-import org.thymeleaf.Arguments
-import org.thymeleaf.messageresolver.MessageResolution
+import javax.annotation.Resource
+import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
+import javax.servlet.{MultipartConfigElement, ServletContext}
 
 import codelab.service.AppService
 import core.Logging
 import core.service.ResourceService
-import javax.annotation.Resource
-import javax.servlet.MultipartConfigElement
-import javax.servlet.ServletContext
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration
+import org.springframework.boot.context.embedded.ServletContextInitializer
+import org.springframework.context.annotation.{Bean, ComponentScan, Configuration, Lazy}
+import org.springframework.web.servlet.config.annotation.{DefaultServletHandlerConfigurer, EnableWebMvc}
+import org.thymeleaf.Arguments
+import org.thymeleaf.messageresolver.MessageResolution
 
 @Lazy
 @Configuration
@@ -70,15 +62,13 @@ class WebConfiguration extends Logging {
 	// Thymeleaf
 
 	@Bean
-	def templateResolver = {
-		val templateResolver = new org.thymeleaf.templateresolver.ServletContextTemplateResolver
-		templateResolver.setPrefix("/WEB-INF/templates/")
-		templateResolver.setSuffix(".html")
-		templateResolver.setTemplateMode("HTML5")
-		templateResolver.setCacheTTLMs(1000)
-		templateResolver.setCharacterEncoding("UTF-8")
-		templateResolver.setOrder(1)
-		templateResolver
+	def thymeleafViewResolver = {
+		val viewResolver = new org.thymeleaf.spring4.view.ThymeleafViewResolver
+		viewResolver.setTemplateEngine(templateEngine)
+		viewResolver.setViewNames(Array("*"))
+		viewResolver.setCharacterEncoding("UTF-8")
+		viewResolver.setOrder(1)
+		viewResolver
 	}
 
 	@Bean
@@ -90,13 +80,15 @@ class WebConfiguration extends Logging {
 	}
 
 	@Bean
-	def thymeleafViewResolver = {
-		val viewResolver = new org.thymeleaf.spring4.view.ThymeleafViewResolver
-		viewResolver.setTemplateEngine(templateEngine)
-		viewResolver.setViewNames(Array("*"))
-		viewResolver.setCharacterEncoding("UTF-8")
-		viewResolver.setOrder(1)
-		viewResolver
+	def templateResolver = {
+		val templateResolver = new org.thymeleaf.templateresolver.ServletContextTemplateResolver
+		templateResolver.setPrefix("/WEB-INF/templates/")
+		templateResolver.setSuffix(".html")
+		templateResolver.setTemplateMode("HTML5")
+		templateResolver.setCacheTTLMs(1000)
+		templateResolver.setCharacterEncoding("UTF-8")
+		templateResolver.setOrder(1)
+		templateResolver
 	}
 
 	@Bean

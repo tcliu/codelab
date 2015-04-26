@@ -23,6 +23,7 @@ lib_managed
 *.ipr
 *.iws
 *.idea
+projectFilesBackup
 
 # Other files
 db

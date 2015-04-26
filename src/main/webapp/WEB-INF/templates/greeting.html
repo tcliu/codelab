@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:lang="${#locale}">
-	<head th:include="layout::head-basic" />
+	<head>
+		<th:block th:include="head::all" />
+	</head>
 	<body th:lang="${#locale}">
-	    <p th:text="'Hello, ' + ${name} + '!'" />
+		<th:block th:include="header" />
+		<div class="container">
+			<h1 th:text="'Hello, ' + ${name} + '!'" />
+		</div>
+		<th:block th:include="footer" />
 	</body>
 </html>

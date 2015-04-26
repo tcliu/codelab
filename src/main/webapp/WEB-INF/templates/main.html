@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:lang="${#locale}" ng-app="">
+	<head>
+		<th:block th:include="head::all" />
+		<script>require(["js/main"]);</script>
+	</head>
+	<body th:lang="${#locale}">
+		<th:block th:include="header" />
+		<div class="container">
+			<th:block th:include="components/menu" />
+			<main id="mainPanel" class="leftPanel">
+				<p th:text="#{messages/works}" />
+			</main>
+		</div>
+		<th:block th:include="footer" />
+	</body>
+</html>
