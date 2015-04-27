@@ -3,7 +3,7 @@ CodeLab
 
 CodeLab is a Scala-based web application built on top of Core project for experimental purpose.
 
-It covers but not limited to the technologies below.
+It covers but not limits to the technologies below.
 
 - Spring MVC
 - Spring Boot
@@ -14,12 +14,12 @@ It covers but not limited to the technologies below.
 - Ajax
 - WebSocket
 
-Launching the web application
+To launch the web application, type the following in command line console:
 
+<pre>
 git clone https://github.com/tcliu/codelab.git
 git clone https://github.com/tcliu/core.git
 gradle -PmainClass=codelab.WebLauncher -Dserver.port=8080 execute
+</pre>
 
-Accessing the web application
-
-http://localhost:8080/
+Visit http://localhost:8080/ to access the application
