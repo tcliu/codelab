@@ -59,3 +59,9 @@ task copyToLib(type: Copy) {
 jar {
 	dependsOn copyToLib
 }
+
+task execute(type: JavaExec) {
+	main = mainClass
+	classpath = sourceSets.main.runtimeClasspath
+    systemProperties System.getProperties()
+}
